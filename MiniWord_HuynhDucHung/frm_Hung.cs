@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Imaging;
 using System.Drawing.Text;
 using System.Linq;
 using System.Text;
@@ -26,8 +27,101 @@ namespace MiniWord_HuynhDucHung
             loadFont();
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
             rtbContent.SelectionFont = new Font("Times New Roman", 14, FontStyle.Regular);
-            
+
+            dropBtnTextColor.DropDownOpening += DropDownButton_DropDownOpening;
         }
+        private void DropDownButton_DropDownOpening(object sender, System.EventArgs e)
+        {
+            ToolStripDropDownButton dropDownButton = (ToolStripDropDownButton)sender;
+            ToolStripDropDown dropDown = dropDownButton.DropDown;
+            dropDown.Items.Clear();
+
+            // Thêm các màu sắc vào dropDown
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Black));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.White));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Red));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Green));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Blue));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Yellow));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Cyan));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.Magenta));
+            dropDown.Items.Add(CreateColorToolStripItem(Color.AliceBlue));
+
+        }
+        
+        private ToolStripItem CreateColorToolStripItem(Color color)
+        {
+            ToolStripControlHost host = new ToolStripControlHost(new Panel());
+
+            // Thiết lập thuộc tính của host
+            host.AutoSize = false;
+            host.Size = new Size(100, 20);
+            host.MouseLeave += (sender, e) =>
+            {
+                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
+                int start = rtbContent.SelectionStart;
+                int length = rtbContent.SelectionLength;
+
+                rtbContent.SelectionColor = color;
+
+
+                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
+                rtbContent.SelectionStart = start;
+                rtbContent.SelectionLength = length;
+
+                toolStrip1.Refresh();
+            };
+            host.MouseHover += (sender,e) =>
+            {
+                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
+                int start = rtbContent.SelectionStart;
+                int length = rtbContent.SelectionLength;
+
+                rtbContent.SelectionColor = color;
+
+
+                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
+                rtbContent.SelectionStart = start;
+                rtbContent.SelectionLength = length;
+
+                toolStrip1.Refresh();
+            };
+
+            // Ghi đè sự kiện Paint để vẽ từng thanh màu
+            host.Paint += (sender, e) =>
+            {
+                //using (SolidBrush brush = new SolidBrush(color))
+                //{
+                //    e.Graphics.FillRectangle(brush, e.ClipRectangle);
+                //}
+
+                using (SolidBrush brush = new SolidBrush(color))
+                {
+                    Rectangle rect = new Rectangle(2, 2, host.Width - 4, host.Height - 4);
+                    e.Graphics.FillRectangle(brush, rect);
+                }
+            };
+
+            host.Click += (sender, e) =>
+            {
+               
+                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
+                int start = rtbContent.SelectionStart;
+                int length = rtbContent.SelectionLength;
+
+                rtbContent.SelectionColor = color;
+
+                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
+                rtbContent.SelectionStart = start;
+                rtbContent.SelectionLength = length;
+
+                dropBtnTextColor.HideDropDown();
+                toolStrip1.Refresh(); 
+            };
+
+            return host;
+        }
+       
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             isSaved = false;
@@ -232,18 +326,17 @@ namespace MiniWord_HuynhDucHung
         }
         private void cbbFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
-            float initialFontSize = rtbContent.Font.Size;
+            float initialFontSize = rtbContent.SelectionFont.Size;
             string selectedFont = cbbFonts.SelectedItem.ToString();
             // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
             int start = rtbContent.SelectionStart;
             int length = rtbContent.SelectionLength;
 
-            rtbContent.SelectionFont = new Font(selectedFont, initialFontSize, rtbContent.Font.Style); ;
+            rtbContent.SelectionFont = new Font(selectedFont, initialFontSize, rtbContent.SelectionFont.Style); ;
 
             // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
             rtbContent.SelectionStart = start;
             rtbContent.SelectionLength = length;
-            //rtbContent.Font = font;
         }
         private void btnBold_Click(object sender, EventArgs e)
         {
@@ -254,12 +347,14 @@ namespace MiniWord_HuynhDucHung
             bool isBold = rtbContent.SelectionFont.Bold;
             if (isBold)
             {
-                rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Bold);
+                btnBold.CheckState = CheckState.Unchecked;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Bold);
                 return;
             }
+            btnBold.CheckState = CheckState.Checked;
             // Tạo một kiểu chữ kết hợp
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily,rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Bold);
+            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Bold);
             
             // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
             rtbContent.SelectionStart = start;
@@ -274,14 +369,15 @@ namespace MiniWord_HuynhDucHung
             bool isItalic = rtbContent.SelectionFont.Italic;
             if (isItalic)
             {
-                rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Italic);
+                btnItalicized.CheckState = CheckState.Unchecked;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Italic);
                 return;
             }
-
+            btnItalicized.CheckState = CheckState.Checked;
 
             // Tạo một kiểu chữ kết hợp
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Italic);
+            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Italic);
 
 
            
@@ -302,13 +398,14 @@ namespace MiniWord_HuynhDucHung
             bool isUnderline = rtbContent.SelectionFont.Underline;
             if (isUnderline)
             {
-                rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Underline);
+                btnUnderline.CheckState = CheckState.Unchecked;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Underline);
                 return;
             }
-
+            btnUnderline.CheckState = CheckState.Checked;
             // Tạo một kiểu chữ kết hợp
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.Font.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Underline);
+            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Underline);
 
             // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
             rtbContent.SelectionStart = start;
@@ -331,7 +428,14 @@ namespace MiniWord_HuynhDucHung
 
             System.Diagnostics.Process.Start(appPath);
         }
-
-        
+        private void rtbContent_SelectionChanged(object sender, EventArgs e)
+        {
+            bool isBold = rtbContent.SelectionFont.Bold;
+            bool isUnderline = rtbContent.SelectionFont.Underline;
+            bool isItalic = rtbContent.SelectionFont.Italic;
+            btnBold.CheckState = (isBold ? CheckState.Checked : CheckState.Unchecked);
+            btnUnderline.CheckState = (isUnderline ? CheckState.Checked : CheckState.Unchecked);
+            btnItalicized.CheckState = (isItalic ? CheckState.Checked : CheckState.Unchecked);
+        }
     }
 }

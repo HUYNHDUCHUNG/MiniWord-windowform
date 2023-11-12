@@ -48,11 +48,16 @@ namespace MiniWord_HuynhDucHung
             this.btnNewFile = new System.Windows.Forms.ToolStripButton();
             this.btnOpenFile = new System.Windows.Forms.ToolStripButton();
             this.btnSave = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.btnBold = new System.Windows.Forms.ToolStripButton();
             this.btnItalicized = new System.Windows.Forms.ToolStripButton();
             this.btnUnderline = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.cbbFonts = new System.Windows.Forms.ToolStripComboBox();
             this.cbbFontSizes = new System.Windows.Forms.ToolStripComboBox();
+            this.dropBtnTextColor = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
             this.toolStripContainer1.TopToolStripPanel.SuspendLayout();
@@ -100,41 +105,41 @@ namespace MiniWord_HuynhDucHung
             // toolNewFile
             // 
             this.toolNewFile.Name = "toolNewFile";
-            this.toolNewFile.Size = new System.Drawing.Size(180, 22);
+            this.toolNewFile.Size = new System.Drawing.Size(124, 22);
             this.toolNewFile.Text = "New File";
             this.toolNewFile.Click += new System.EventHandler(this.toolNewFile_Click);
             // 
             // toolOpenFile
             // 
             this.toolOpenFile.Name = "toolOpenFile";
-            this.toolOpenFile.Size = new System.Drawing.Size(180, 22);
+            this.toolOpenFile.Size = new System.Drawing.Size(124, 22);
             this.toolOpenFile.Text = "Open File";
             this.toolOpenFile.Click += new System.EventHandler(this.toolOpenFile_Click);
             // 
             // toolSave
             // 
             this.toolSave.Name = "toolSave";
-            this.toolSave.Size = new System.Drawing.Size(180, 22);
+            this.toolSave.Size = new System.Drawing.Size(124, 22);
             this.toolSave.Text = "Save";
             this.toolSave.Click += new System.EventHandler(this.toolSave_Click);
             // 
             // toolSaveAs
             // 
             this.toolSaveAs.Name = "toolSaveAs";
-            this.toolSaveAs.Size = new System.Drawing.Size(180, 22);
+            this.toolSaveAs.Size = new System.Drawing.Size(124, 22);
             this.toolSaveAs.Text = "Save As";
             this.toolSaveAs.Click += new System.EventHandler(this.toolSaveAs_Click);
             // 
             // closeToolStripMenuItem
             // 
             this.closeToolStripMenuItem.Name = "closeToolStripMenuItem";
-            this.closeToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.closeToolStripMenuItem.Size = new System.Drawing.Size(124, 22);
             this.closeToolStripMenuItem.Text = "Close";
             // 
             // toolExit
             // 
             this.toolExit.Name = "toolExit";
-            this.toolExit.Size = new System.Drawing.Size(180, 22);
+            this.toolExit.Size = new System.Drawing.Size(124, 22);
             this.toolExit.Text = "Exit";
             this.toolExit.Click += new System.EventHandler(this.toolExit_Click);
             // 
@@ -187,6 +192,7 @@ namespace MiniWord_HuynhDucHung
             this.rtbContent.Size = new System.Drawing.Size(853, 342);
             this.rtbContent.TabIndex = 0;
             this.rtbContent.Text = "";
+            this.rtbContent.SelectionChanged += new System.EventHandler(this.rtbContent_SelectionChanged);
             this.rtbContent.TextChanged += new System.EventHandler(this.richTextBox1_TextChanged);
             // 
             // toolStrip1
@@ -196,14 +202,19 @@ namespace MiniWord_HuynhDucHung
             this.btnNewFile,
             this.btnOpenFile,
             this.btnSave,
+            this.toolStripSeparator1,
             this.btnBold,
             this.btnItalicized,
             this.btnUnderline,
+            this.toolStripSeparator2,
+            this.dropBtnTextColor,
+            this.toolStripDropDownButton1,
+            this.toolStripSeparator3,
             this.cbbFonts,
             this.cbbFontSizes});
             this.toolStrip1.Location = new System.Drawing.Point(3, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(437, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(513, 25);
             this.toolStrip1.TabIndex = 0;
             // 
             // btnNewFile
@@ -236,6 +247,11 @@ namespace MiniWord_HuynhDucHung
             this.btnSave.Text = "Save";
             this.btnSave.Click += new System.EventHandler(this.btnSave_Click);
             // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
             // btnBold
             // 
             this.btnBold.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
@@ -265,6 +281,11 @@ namespace MiniWord_HuynhDucHung
             this.btnUnderline.Size = new System.Drawing.Size(23, 22);
             this.btnUnderline.Text = "Underline";
             this.btnUnderline.Click += new System.EventHandler(this.btnUnderline_Click);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // cbbFonts
             // 
@@ -297,6 +318,30 @@ namespace MiniWord_HuynhDucHung
             this.cbbFontSizes.Size = new System.Drawing.Size(75, 25);
             this.cbbFontSizes.Text = "14";
             this.cbbFontSizes.SelectedIndexChanged += new System.EventHandler(this.cbbFontSizes_SelectedIndexChanged);
+            // 
+            // dropBtnTextColor
+            // 
+            this.dropBtnTextColor.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.dropBtnTextColor.ForeColor = System.Drawing.SystemColors.ActiveCaptionText;
+            this.dropBtnTextColor.Image = ((System.Drawing.Image)(resources.GetObject("dropBtnTextColor.Image")));
+            this.dropBtnTextColor.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.dropBtnTextColor.Name = "dropBtnTextColor";
+            this.dropBtnTextColor.Size = new System.Drawing.Size(29, 22);
+            this.dropBtnTextColor.Text = "Text color";
+            // 
+            // toolStripDropDownButton1
+            // 
+            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
+            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
+            this.toolStripDropDownButton1.Size = new System.Drawing.Size(29, 22);
+            this.toolStripDropDownButton1.Text = "toolStripDropDownButton1";
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(6, 25);
             // 
             // frm_Hung
             // 
@@ -347,6 +392,11 @@ namespace MiniWord_HuynhDucHung
         private System.Windows.Forms.ToolStripButton btnNewFile;
         private System.Windows.Forms.ToolStripButton btnOpenFile;
         private System.Windows.Forms.ToolStripButton btnSave;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripDropDownButton dropBtnTextColor;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 
