@@ -1,130 +1,101 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Drawing.Imaging;
 using System.Drawing.Text;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace MiniWord_HuynhDucHung
 {
     public partial class frm_Hung : Form
     {
-
+        
         String filePath;
         bool isSaved = true;
-        public frm_Hung()
+        int lengthText = 0;
+        int currentLine = 0;
+        int currentColumn = 0;
+        int curretnPosition = 0;
+        int countDoc;
+        string defaulFileName = "document";
+
+
+        [System.Runtime.InteropServices.DllImport("user32")]
+        public static extern int GetCaretPos(ref Point lpPoint);
+        public frm_Hung(int count = 1)
         {
+            this.countDoc = count;
             InitializeComponent();
             init();
         }
         private void init()
         {
             loadFont();
+            Text = defaulFileName + countDoc;
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
             rtbContent.SelectionFont = new Font("Times New Roman", 14, FontStyle.Regular);
 
-            dropBtnTextColor.DropDownOpening += DropDownButton_DropDownOpening;
-        }
-        private void DropDownButton_DropDownOpening(object sender, System.EventArgs e)
-        {
-            ToolStripDropDownButton dropDownButton = (ToolStripDropDownButton)sender;
-            ToolStripDropDown dropDown = dropDownButton.DropDown;
-            dropDown.Items.Clear();
-
-            // Thêm các màu sắc vào dropDown
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Black));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.White));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Red));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Green));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Blue));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Yellow));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Cyan));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.Magenta));
-            dropDown.Items.Add(CreateColorToolStripItem(Color.AliceBlue));
-
+            
         }
         
-        private ToolStripItem CreateColorToolStripItem(Color color)
-        {
-            ToolStripControlHost host = new ToolStripControlHost(new Panel());
-
-            // Thiết lập thuộc tính của host
-            host.AutoSize = false;
-            host.Size = new Size(100, 20);
-            host.MouseLeave += (sender, e) =>
-            {
-                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-                int start = rtbContent.SelectionStart;
-                int length = rtbContent.SelectionLength;
-
-                rtbContent.SelectionColor = color;
-
-
-                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-                rtbContent.SelectionStart = start;
-                rtbContent.SelectionLength = length;
-
-                toolStrip1.Refresh();
-            };
-            host.MouseHover += (sender,e) =>
-            {
-                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-                int start = rtbContent.SelectionStart;
-                int length = rtbContent.SelectionLength;
-
-                rtbContent.SelectionColor = color;
-
-
-                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-                rtbContent.SelectionStart = start;
-                rtbContent.SelectionLength = length;
-
-                toolStrip1.Refresh();
-            };
-
-            // Ghi đè sự kiện Paint để vẽ từng thanh màu
-            host.Paint += (sender, e) =>
-            {
-                //using (SolidBrush brush = new SolidBrush(color))
-                //{
-                //    e.Graphics.FillRectangle(brush, e.ClipRectangle);
-                //}
-
-                using (SolidBrush brush = new SolidBrush(color))
-                {
-                    Rectangle rect = new Rectangle(2, 2, host.Width - 4, host.Height - 4);
-                    e.Graphics.FillRectangle(brush, rect);
-                }
-            };
-
-            host.Click += (sender, e) =>
-            {
-               
-                // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-                int start = rtbContent.SelectionStart;
-                int length = rtbContent.SelectionLength;
-
-                rtbContent.SelectionColor = color;
-
-                // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-                rtbContent.SelectionStart = start;
-                rtbContent.SelectionLength = length;
-
-                dropBtnTextColor.HideDropDown();
-                toolStrip1.Refresh(); 
-            };
-
-            return host;
-        }
-       
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
+            lengthText = rtbContent.TextLength;
+            statusLength.Text = "Length: " + lengthText;
+
+            getCurrentLine();
+            getCurrentColumn(rtbContent, rtbContent.SelectionStart);
+            curretnPosition = rtbContent.SelectionStart;
+            statusPosition.Text = "Pos: " + curretnPosition;
             isSaved = false;
+        }
+        private void rtbContent_SelectionChanged(object sender, EventArgs e)
+        {
+            if (rtbContent.SelectionFont == null) return;
+            bool isBold = rtbContent.SelectionFont.Bold;
+            bool isUnderline = rtbContent.SelectionFont.Underline;
+            bool isItalic = rtbContent.SelectionFont.Italic;
+            btnBold.CheckState = (isBold ? CheckState.Checked : CheckState.Unchecked);
+            btnUnderline.CheckState = (isUnderline ? CheckState.Checked : CheckState.Unchecked);
+            btnItalicized.CheckState = (isItalic ? CheckState.Checked : CheckState.Unchecked);
+
+            getCurrentLine();
+            getCurrentColumn(rtbContent, rtbContent.SelectionStart);
+            curretnPosition = rtbContent.SelectionStart;
+            statusPosition.Text = "Pos: " + curretnPosition;
+
+        }
+        private void getCurrentLine()
+        {
+            currentLine = rtbContent.GetLineFromCharIndex(rtbContent.SelectionStart) + 1;
+            statusLine.Text = "Ln: " + currentLine;
+        }
+        private static int GetCorrection(RichTextBox e, int index)
+        {
+            Point pt1 = Point.Empty;
+            GetCaretPos(ref pt1);
+            Point pt2 = e.GetPositionFromCharIndex(index);
+
+            if (pt1 != pt2)
+                return 1;
+            else
+                return 0;
+        }
+        private void getCurrentColumn(RichTextBox e, int index1)
+        {
+
+            int correction = GetCorrection(e, index1);
+            Point p = e.GetPositionFromCharIndex(index1 - correction);
+
+            if (p.X == 1)
+                currentColumn =  1;
+
+            p.X = 0;
+            int index2 = e.GetCharIndexFromPosition(p);
+
+            currentColumn = index1 - index2 + 1;
+            statusColumn.Text = "Col: " + currentColumn;
         }
         private void loadFont()
         {
@@ -261,6 +232,10 @@ namespace MiniWord_HuynhDucHung
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.Filter = "Rich Text Files|.rtb|All Files|.*"; // Change filter to *.rtb
+            if(string.IsNullOrEmpty(filePath)) 
+                saveFileDialog.FileName = defaulFileName + countDoc + ".rtb";
+            else
+                saveFileDialog.FileName = Path.GetFileName(filePath);
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
             {
                 filePath = saveFileDialog.FileName;
@@ -277,6 +252,7 @@ namespace MiniWord_HuynhDucHung
             {
                 SaveFileDialog saveFileDialog = new SaveFileDialog();
                 saveFileDialog.Filter = "Rich Text Files|.rtb|All Files|.*"; // Change filter to *.rtb
+                saveFileDialog.FileName = defaulFileName + countDoc + ".rtb";
                 if (saveFileDialog.ShowDialog() == DialogResult.OK)
                 {
                     filePath = saveFileDialog.FileName;
@@ -307,43 +283,31 @@ namespace MiniWord_HuynhDucHung
                 filePath = openFileDialog.FileName;
                 rtbContent.LoadFile(filePath, RichTextBoxStreamType.RichText); // Use RichTextStreamType.RichText
                 isSaved = true;
+                this.Text = Path.GetFileName(filePath);
+
+                lengthText = rtbContent.TextLength;
+                statusLength.Text = "Length: " + lengthText;
+
+                getCurrentLine();
+                getCurrentColumn(rtbContent, rtbContent.SelectionStart);
+
             }
         }
         private void cbbFontSizes_SelectedIndexChanged(object sender, EventArgs e)
         {
             int selectedFontSize = int.Parse(cbbFontSizes.SelectedItem.ToString());
-
-            // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-            int start = rtbContent.SelectionStart;
-            int length = rtbContent.SelectionLength;
-
-            
             rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, selectedFontSize, rtbContent.SelectionFont.Style);
             
-            // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-            rtbContent.SelectionStart = start;
-            rtbContent.SelectionLength = length;
         }
         private void cbbFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
             float initialFontSize = rtbContent.SelectionFont.Size;
             string selectedFont = cbbFonts.SelectedItem.ToString();
-            // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-            int start = rtbContent.SelectionStart;
-            int length = rtbContent.SelectionLength;
-
             rtbContent.SelectionFont = new Font(selectedFont, initialFontSize, rtbContent.SelectionFont.Style); ;
 
-            // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-            rtbContent.SelectionStart = start;
-            rtbContent.SelectionLength = length;
         }
         private void btnBold_Click(object sender, EventArgs e)
         {
-            // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-            int start = rtbContent.SelectionStart;
-            int length = rtbContent.SelectionLength;
-
             bool isBold = rtbContent.SelectionFont.Bold;
             if (isBold)
             {
@@ -356,16 +320,9 @@ namespace MiniWord_HuynhDucHung
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
             rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Bold);
             
-            // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-            rtbContent.SelectionStart = start;
-            rtbContent.SelectionLength = length;
         }
         private void btnItalicized_Click(object sender, EventArgs e)
         {
-            // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-            int start = rtbContent.SelectionStart;
-            int length = rtbContent.SelectionLength;
-
             bool isItalic = rtbContent.SelectionFont.Italic;
             if (isItalic)
             {
@@ -375,26 +332,13 @@ namespace MiniWord_HuynhDucHung
             }
             btnItalicized.CheckState = CheckState.Checked;
 
-            // Tạo một kiểu chữ kết hợp
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
             rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Italic);
-
-
-           
-
-            // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-            rtbContent.SelectionStart = start;
-            rtbContent.SelectionLength = length;
-
 
             
         }
         private void btnUnderline_Click(object sender, EventArgs e)
         {
-            // Lưu vị trí bắt đầu và kết thúc của phần văn bản cần tô đen
-            int start = rtbContent.SelectionStart;
-            int length = rtbContent.SelectionLength;
-
             bool isUnderline = rtbContent.SelectionFont.Underline;
             if (isUnderline)
             {
@@ -407,12 +351,6 @@ namespace MiniWord_HuynhDucHung
             FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
             rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Underline);
 
-            // Đặt lại vị trí và độ dài của phần văn bản đã chọn ban đầu
-            rtbContent.SelectionStart = start;
-            rtbContent.SelectionLength = length;
-
-            
-            
         }
         private void toolNewFile_Click(object sender, EventArgs e)
         {
@@ -424,18 +362,75 @@ namespace MiniWord_HuynhDucHung
         }
         private void NewFile()
         {
-            string appPath = Application.ExecutablePath;
+            //string appPath = Application.ExecutablePath;
+            //System.Diagnostics.Process.Start(appPath);
+           
+            Thread thread = new Thread(() =>
+            {
+                Application.Run(new frm_Hung(countDoc + 1));
+            });
+            thread.SetApartmentState(ApartmentState.STA);
+            thread.Start();
 
-            System.Diagnostics.Process.Start(appPath);
         }
-        private void rtbContent_SelectionChanged(object sender, EventArgs e)
+        private void btnInsertImage_Click(object sender, EventArgs e)
         {
-            bool isBold = rtbContent.SelectionFont.Bold;
-            bool isUnderline = rtbContent.SelectionFont.Underline;
-            bool isItalic = rtbContent.SelectionFont.Italic;
-            btnBold.CheckState = (isBold ? CheckState.Checked : CheckState.Unchecked);
-            btnUnderline.CheckState = (isUnderline ? CheckState.Checked : CheckState.Unchecked);
-            btnItalicized.CheckState = (isItalic ? CheckState.Checked : CheckState.Unchecked);
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                string imagePath = openFileDialog.FileName;
+
+                Image image = Image.FromFile(imagePath);
+
+                // Chèn hình ảnh vào vị trí con trỏ trong RichTextBox
+                Clipboard.SetImage(image);
+                rtbContent.Paste();
+            }
+        }
+        private void toolMenuUndo_Click(object sender, EventArgs e)
+        {
+            rtbContent.Undo();
+        }
+        private void toolMenuRedo_Click(object sender, EventArgs e)
+        {
+            rtbContent.Redo();
+        }
+        private void toolMenuCut_Click(object sender, EventArgs e)
+        {
+            rtbContent.Cut();
+        }
+        private void dropBtnTextColor_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Color selectedColor = colorDialog1.Color;
+                rtbContent.SelectionColor = selectedColor;
+            }
+        }
+        private void dropBtnHighLightText_Click(object sender, EventArgs e)
+        {
+            if (colorDialog1.ShowDialog() == DialogResult.OK)
+            {
+                Color selectedColor = colorDialog1.Color;
+                
+                rtbContent.SelectionBackColor = selectedColor;
+            }
+        }
+        private void btnZoomIn_Click(object sender, EventArgs e)
+        {
+            if (rtbContent.ZoomFactor < 64.5)
+            {
+                rtbContent.ZoomFactor = rtbContent.ZoomFactor + (float)0.1;
+            }
+        }
+        private void btnZoomOut_Click(object sender, EventArgs e)
+        {
+            if (rtbContent.ZoomFactor > 0.515625)
+            {
+                rtbContent.ZoomFactor = rtbContent.ZoomFactor - (float)0.1;
+            }
+            
         }
     }
 }
