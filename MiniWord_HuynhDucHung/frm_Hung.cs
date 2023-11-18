@@ -19,7 +19,7 @@ namespace MiniWord_HuynhDucHung
         int curretnPosition = 0;
         int countDoc;
         string defaulFileName = "document";
-
+        FindForm _findForm;
 
         [System.Runtime.InteropServices.DllImport("user32")]
         public static extern int GetCaretPos(ref Point lpPoint);
@@ -36,9 +36,8 @@ namespace MiniWord_HuynhDucHung
             this.FormClosing += new FormClosingEventHandler(MainForm_FormClosing);
             rtbContent.SelectionFont = new Font("Times New Roman", 14, FontStyle.Regular);
 
-            
         }
-        
+       
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             lengthText = rtbContent.TextLength;
@@ -290,7 +289,6 @@ namespace MiniWord_HuynhDucHung
 
                 getCurrentLine();
                 getCurrentColumn(rtbContent, rtbContent.SelectionStart);
-
             }
         }
         private void cbbFontSizes_SelectedIndexChanged(object sender, EventArgs e)
@@ -308,49 +306,73 @@ namespace MiniWord_HuynhDucHung
         }
         private void btnBold_Click(object sender, EventArgs e)
         {
-            bool isBold = rtbContent.SelectionFont.Bold;
-            if (isBold)
+            
+            if (rtbContent.SelectionFont != null)
             {
-                btnBold.CheckState = CheckState.Unchecked;
-                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Bold);
-                return;
+                bool isBold = rtbContent.SelectionFont.Bold;
+                if (isBold)
+                {
+                    btnBold.CheckState = CheckState.Unchecked;
+                    rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                            rtbContent.SelectionFont.Size, 
+                                                            rtbContent.SelectionFont.Style &
+                                                            ~FontStyle.Bold);
+                    return;
+                }
+                btnBold.CheckState = CheckState.Checked;
+                // Tạo một kiểu chữ kết hợp
+                FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                    rtbContent.SelectionFont.Size,
+                                                    currentFontStyle | FontStyle.Bold);
             }
-            btnBold.CheckState = CheckState.Checked;
-            // Tạo một kiểu chữ kết hợp
-            FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Bold);
+            
             
         }
         private void btnItalicized_Click(object sender, EventArgs e)
         {
-            bool isItalic = rtbContent.SelectionFont.Italic;
-            if (isItalic)
+            if (rtbContent.SelectionFont != null)
             {
-                btnItalicized.CheckState = CheckState.Unchecked;
-                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Italic);
-                return;
+                bool isItalic = rtbContent.SelectionFont.Italic;
+                if (isItalic)
+                {
+                    btnItalicized.CheckState = CheckState.Unchecked;
+                    rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                        rtbContent.SelectionFont.Size,
+                                                        rtbContent.SelectionFont.Style
+                                                        & ~FontStyle.Italic);
+                    return;
+                }
+                btnItalicized.CheckState = CheckState.Checked;
+
+                FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                    rtbContent.SelectionFont.Size,
+                                                    currentFontStyle | FontStyle.Italic);
             }
-            btnItalicized.CheckState = CheckState.Checked;
-
-            FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Italic);
-
             
         }
         private void btnUnderline_Click(object sender, EventArgs e)
         {
-            bool isUnderline = rtbContent.SelectionFont.Underline;
-            if (isUnderline)
+            if (rtbContent.SelectionFont != null)
             {
-                btnUnderline.CheckState = CheckState.Unchecked;
-                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, rtbContent.SelectionFont.Style & ~FontStyle.Underline);
-                return;
+                bool isUnderline = rtbContent.SelectionFont.Underline;
+                if (isUnderline)
+                {
+                    btnUnderline.CheckState = CheckState.Unchecked;
+                    rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                            rtbContent.SelectionFont.Size,
+                                                            rtbContent.SelectionFont.Style 
+                                                            & ~FontStyle.Underline);
+                    return;
+                }
+                btnUnderline.CheckState = CheckState.Checked;
+                // Tạo một kiểu chữ kết hợp
+                FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
+                rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily,
+                                                    rtbContent.SelectionFont.Size,
+                                                    currentFontStyle | FontStyle.Underline);
             }
-            btnUnderline.CheckState = CheckState.Checked;
-            // Tạo một kiểu chữ kết hợp
-            FontStyle currentFontStyle = rtbContent.SelectionFont.Style;
-            rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, rtbContent.SelectionFont.Size, currentFontStyle | FontStyle.Underline);
-
         }
         private void toolNewFile_Click(object sender, EventArgs e)
         {
@@ -390,7 +412,8 @@ namespace MiniWord_HuynhDucHung
         }
         private void toolMenuUndo_Click(object sender, EventArgs e)
         {
-            rtbContent.Undo();
+              rtbContent.Undo();
+            
         }
         private void toolMenuRedo_Click(object sender, EventArgs e)
         {
@@ -421,7 +444,7 @@ namespace MiniWord_HuynhDucHung
         {
             if (rtbContent.ZoomFactor < 64.5)
             {
-                rtbContent.ZoomFactor = rtbContent.ZoomFactor + (float)0.1;
+                rtbContent.ZoomFactor = rtbContent.ZoomFactor + (float)0.2;
             }
         }
         private void btnZoomOut_Click(object sender, EventArgs e)
@@ -431,6 +454,21 @@ namespace MiniWord_HuynhDucHung
                 rtbContent.ZoomFactor = rtbContent.ZoomFactor - (float)0.1;
             }
             
+        }
+
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (_findForm == null || _findForm.IsDisposed)
+                _findForm = new FindForm(rtbContent);
+            _findForm.ShowFind(false);
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (_findForm == null || _findForm.IsDisposed)
+                _findForm = new FindForm(rtbContent);
+            _findForm.ShowFind(true);
         }
     }
 }
