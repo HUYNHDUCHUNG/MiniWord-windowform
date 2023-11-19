@@ -151,72 +151,12 @@ namespace MiniWord_HuynhDucHung
         }
         private DialogResult ShowCustomMessageBoxExit()
         {
-            DialogResult result = DialogResult.None;
-            using (var form = new Form())
-            {
-                form.Size = new System.Drawing.Size(300, 150);
-                form.Text = "Notification";
-                form.FormBorderStyle = FormBorderStyle.FixedDialog;
-                form.StartPosition = FormStartPosition.CenterScreen;
-                form.MaximizeBox = false;
-                form.MinimizeBox = false;
-
-                var label = new Label
-                {
-                    Text = "Save to change your this file?",
-                    AutoSize = true,
-                    Location = new System.Drawing.Point(20, 20)
-                };
-
-                var buttonSave = new Button
-                {
-                    Text = "Save",
-                    DialogResult = DialogResult.Yes,
-                    Location = new System.Drawing.Point(20, 80)
-                };
-
-                var buttonDontSave = new Button
-                {
-                    Text = "Don't Save",
-                    DialogResult = DialogResult.No,
-                    Location = new System.Drawing.Point(100, 80)
-                };
-
-                var buttonCancel = new Button
-                {
-                    Text = "Cancel",
-                    DialogResult = DialogResult.Cancel,
-                    Location = new System.Drawing.Point(180, 80)
-                };
-
-                buttonSave.Click += (sender, e) =>
-                {
-                    result = DialogResult.Yes;
-                    form.Close();
-                };
-
-                buttonDontSave.Click += (sender, e) =>
-                {
-                    result = DialogResult.No;
-                    form.Close();
-                };
-
-                buttonCancel.Click += (sender, e) =>
-                {
-                    result = DialogResult.Cancel;
-                    form.Close();
-                };
-
-                form.Controls.Add(label);
-                form.Controls.Add(buttonSave);
-                form.Controls.Add(buttonDontSave);
-                form.Controls.Add(buttonCancel);
-
-                form.ShowDialog();
-
-                return result;
-
-            }
+            return MessageBox.Show(
+                "Save your changes to this file?",
+                "Word",
+                MessageBoxButtons.YesNoCancel,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button1);
         }
         private void btnSave_Click(object sender, EventArgs e)
         {
@@ -294,14 +234,14 @@ namespace MiniWord_HuynhDucHung
         {
             int selectedFontSize = int.Parse(cbbFontSizes.SelectedItem.ToString());
             rtbContent.SelectionFont = new Font(rtbContent.SelectionFont.FontFamily, selectedFontSize, rtbContent.SelectionFont.Style);
-            
+            rtbContent.Focus();
         }
         private void cbbFonts_SelectedIndexChanged(object sender, EventArgs e)
         {
             float initialFontSize = rtbContent.SelectionFont.Size;
             string selectedFont = cbbFonts.SelectedItem.ToString();
             rtbContent.SelectionFont = new Font(selectedFont, initialFontSize, rtbContent.SelectionFont.Style); ;
-
+            rtbContent.Focus();
         }
         private void btnBold_Click(object sender, EventArgs e)
         {
@@ -411,6 +351,7 @@ namespace MiniWord_HuynhDucHung
                 // Chèn hình ảnh vào vị trí con trỏ trong RichTextBox
                 Clipboard.SetImage(image);
                 rtbContent.Paste();
+                rtbContent.SelectionStart = rtbContent.TextLength;
             }
         }
         private void toolMenuUndo_Click(object sender, EventArgs e)
@@ -460,18 +401,23 @@ namespace MiniWord_HuynhDucHung
         }
         private void btnFind_Click(object sender, EventArgs e)
         {
+            if(_findForm == null || _findForm.IsDisposed)
+            {
+                _findForm = new FindForm(rtbContent, false);
+                _findForm.Show(rtbContent);
+            }
             
-
-            _findForm = new FindForm(rtbContent,false);
-            _findForm.Show(rtbContent);
 
 
         }
         private void btnReplace_Click(object sender, EventArgs e)
         {
-            
-            _findForm = new FindForm(rtbContent,true);
-            _findForm.Show(rtbContent);
+
+            if (_findForm == null || _findForm.IsDisposed)
+            {
+                _findForm = new FindForm(rtbContent, true);
+                _findForm.Show(rtbContent);
+            }
 
         }
         private void toolInsertPicture_Click(object sender, EventArgs e)
@@ -517,6 +463,36 @@ namespace MiniWord_HuynhDucHung
         private void redoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             rtbContent.Redo();
+        }
+
+        private void copyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbContent.Copy();
+        }
+
+        private void pasteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbContent.Paste();
+        }
+
+        private void findToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_findForm == null || _findForm.IsDisposed)
+            {
+                _findForm = new FindForm(rtbContent, false);
+                _findForm.Show(rtbContent);
+            }
+
+        }
+
+        private void replaceToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (_findForm == null || _findForm.IsDisposed)
+            {
+                _findForm = new FindForm(rtbContent, true);
+                _findForm.Show(rtbContent);
+            }
+
         }
     }
 }
