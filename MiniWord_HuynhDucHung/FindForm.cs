@@ -99,7 +99,20 @@ namespace MiniWord_HuynhDucHung
 
 		void BtnReplaceAllClick(object sender, EventArgs e)
 		{
-			_richTextBox.Text = _richTextBox.Text.Replace(txtFindText.Text, txtReplace.Text);
+
+			//rtbFind.Text = rtbFind.Text.Replace(tbFind.Text, tbReplace.Text);
+			string searchText = txtFindText.Text;
+			string replaceText = txtReplace.Text;
+			int startIndex = 0;
+			int index = _richTextBox.Find(searchText, startIndex, RichTextBoxFinds.None);
+
+			while (index != -1)
+			{
+				_richTextBox.SelectedText = replaceText;
+
+				startIndex = index + replaceText.Length;
+				index = _richTextBox.Find(searchText, startIndex, RichTextBoxFinds.None);
+			}	
 		}
 	}
 }

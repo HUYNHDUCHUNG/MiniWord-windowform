@@ -455,16 +455,24 @@ namespace MiniWord_HuynhDucHung
             }
             
         }
-
-
         private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnFind_Click(object sender, EventArgs e)
         {
             if (_findForm == null || _findForm.IsDisposed)
                 _findForm = new FindForm(rtbContent);
             _findForm.ShowFind(false);
         }
 
-        private void toolStripButton2_Click(object sender, EventArgs e)
+        private void btnReplace_Click(object sender, EventArgs e)
         {
             if (_findForm == null || _findForm.IsDisposed)
                 _findForm = new FindForm(rtbContent);
