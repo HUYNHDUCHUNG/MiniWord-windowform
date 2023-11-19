@@ -29,6 +29,7 @@ namespace MiniWord_HuynhDucHung
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frm_Hung));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -66,16 +67,25 @@ namespace MiniWord_HuynhDucHung
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.dropBtnTextColor = new System.Windows.Forms.ToolStripDropDownButton();
             this.dropBtnHighLightText = new System.Windows.Forms.ToolStripDropDownButton();
+            this.btnInsertImage = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.cbbFonts = new System.Windows.Forms.ToolStripComboBox();
             this.cbbFontSizes = new System.Windows.Forms.ToolStripComboBox();
-            this.btnInsertImage = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.btnZoomIn = new System.Windows.Forms.ToolStripButton();
             this.btnZoomOut = new System.Windows.Forms.ToolStripButton();
-            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
             this.btnFind = new System.Windows.Forms.ToolStripButton();
             this.btnReplace = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.colorDialog1 = new System.Windows.Forms.ColorDialog();
+            this.toolInsertPicture = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolZoomIn = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolZoomOut = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.copyToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.pasteToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.cutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.undoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.redoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.toolStripContainer1.BottomToolStripPanel.SuspendLayout();
             this.toolStripContainer1.ContentPanel.SuspendLayout();
@@ -83,6 +93,7 @@ namespace MiniWord_HuynhDucHung
             this.toolStripContainer1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -183,7 +194,7 @@ namespace MiniWord_HuynhDucHung
             this.toolMenuUndo.Image = ((System.Drawing.Image)(resources.GetObject("toolMenuUndo.Image")));
             this.toolMenuUndo.Name = "toolMenuUndo";
             this.toolMenuUndo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Z)));
-            this.toolMenuUndo.Size = new System.Drawing.Size(158, 22);
+            this.toolMenuUndo.Size = new System.Drawing.Size(180, 22);
             this.toolMenuUndo.Text = "Undo";
             this.toolMenuUndo.Click += new System.EventHandler(this.toolMenuUndo_Click);
             // 
@@ -192,30 +203,33 @@ namespace MiniWord_HuynhDucHung
             this.toolMenuRedo.Image = ((System.Drawing.Image)(resources.GetObject("toolMenuRedo.Image")));
             this.toolMenuRedo.Name = "toolMenuRedo";
             this.toolMenuRedo.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Y)));
-            this.toolMenuRedo.Size = new System.Drawing.Size(158, 22);
+            this.toolMenuRedo.Size = new System.Drawing.Size(180, 22);
             this.toolMenuRedo.Text = "Redo";
             this.toolMenuRedo.Click += new System.EventHandler(this.toolMenuRedo_Click);
             // 
             // toolMenuCut
             // 
+            this.toolMenuCut.Image = ((System.Drawing.Image)(resources.GetObject("toolMenuCut.Image")));
             this.toolMenuCut.Name = "toolMenuCut";
             this.toolMenuCut.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.X)));
-            this.toolMenuCut.Size = new System.Drawing.Size(158, 22);
+            this.toolMenuCut.Size = new System.Drawing.Size(180, 22);
             this.toolMenuCut.Text = "Cut";
             this.toolMenuCut.Click += new System.EventHandler(this.toolMenuCut_Click);
             // 
             // copyToolStripMenuItem
             // 
+            this.copyToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem.Image")));
             this.copyToolStripMenuItem.Name = "copyToolStripMenuItem";
             this.copyToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
-            this.copyToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.copyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.copyToolStripMenuItem.Text = "Copy";
             // 
             // pasteToolStripMenuItem
             // 
+            this.pasteToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripMenuItem.Image")));
             this.pasteToolStripMenuItem.Name = "pasteToolStripMenuItem";
             this.pasteToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.V)));
-            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.pasteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.pasteToolStripMenuItem.Text = "Paste";
             // 
             // findToolStripMenuItem
@@ -223,7 +237,7 @@ namespace MiniWord_HuynhDucHung
             this.findToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("findToolStripMenuItem.Image")));
             this.findToolStripMenuItem.Name = "findToolStripMenuItem";
             this.findToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this.findToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.findToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.findToolStripMenuItem.Text = "Find";
             // 
             // replaceToolStripMenuItem
@@ -231,17 +245,22 @@ namespace MiniWord_HuynhDucHung
             this.replaceToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("replaceToolStripMenuItem.Image")));
             this.replaceToolStripMenuItem.Name = "replaceToolStripMenuItem";
             this.replaceToolStripMenuItem.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
-            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(158, 22);
+            this.replaceToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.replaceToolStripMenuItem.Text = "Replace";
             // 
             // layoutToolStripMenuItem
             // 
+            this.layoutToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolInsertPicture});
             this.layoutToolStripMenuItem.Name = "layoutToolStripMenuItem";
-            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(55, 20);
-            this.layoutToolStripMenuItem.Text = "Layout";
+            this.layoutToolStripMenuItem.Size = new System.Drawing.Size(48, 20);
+            this.layoutToolStripMenuItem.Text = "Insert";
             // 
             // toolToolStripMenuItem
             // 
+            this.toolToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolZoomIn,
+            this.toolZoomOut});
             this.toolToolStripMenuItem.Name = "toolToolStripMenuItem";
             this.toolToolStripMenuItem.Size = new System.Drawing.Size(41, 20);
             this.toolToolStripMenuItem.Text = "Tool";
@@ -318,6 +337,7 @@ namespace MiniWord_HuynhDucHung
             // 
             // rtbContent
             // 
+            this.rtbContent.ContextMenuStrip = this.contextMenuStrip1;
             this.rtbContent.Dock = System.Windows.Forms.DockStyle.Fill;
             this.rtbContent.Location = new System.Drawing.Point(0, 0);
             this.rtbContent.Name = "rtbContent";
@@ -448,6 +468,16 @@ namespace MiniWord_HuynhDucHung
             this.dropBtnHighLightText.Text = "HighLight";
             this.dropBtnHighLightText.Click += new System.EventHandler(this.dropBtnHighLightText_Click);
             // 
+            // btnInsertImage
+            // 
+            this.btnInsertImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.btnInsertImage.Image = ((System.Drawing.Image)(resources.GetObject("btnInsertImage.Image")));
+            this.btnInsertImage.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnInsertImage.Name = "btnInsertImage";
+            this.btnInsertImage.Size = new System.Drawing.Size(23, 22);
+            this.btnInsertImage.Text = "Insert Picture";
+            this.btnInsertImage.Click += new System.EventHandler(this.btnInsertImage_Click);
+            // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
@@ -485,15 +515,10 @@ namespace MiniWord_HuynhDucHung
             this.cbbFontSizes.Text = "14";
             this.cbbFontSizes.SelectedIndexChanged += new System.EventHandler(this.cbbFontSizes_SelectedIndexChanged);
             // 
-            // btnInsertImage
+            // toolStripSeparator4
             // 
-            this.btnInsertImage.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
-            this.btnInsertImage.Image = ((System.Drawing.Image)(resources.GetObject("btnInsertImage.Image")));
-            this.btnInsertImage.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnInsertImage.Name = "btnInsertImage";
-            this.btnInsertImage.Size = new System.Drawing.Size(23, 22);
-            this.btnInsertImage.Text = "Insert Picture";
-            this.btnInsertImage.Click += new System.EventHandler(this.btnInsertImage_Click);
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
             // 
             // btnZoomIn
             // 
@@ -535,10 +560,80 @@ namespace MiniWord_HuynhDucHung
             this.btnReplace.Text = "Replace";
             this.btnReplace.Click += new System.EventHandler(this.btnReplace_Click);
             // 
-            // toolStripSeparator4
+            // toolInsertPicture
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            this.toolInsertPicture.Image = ((System.Drawing.Image)(resources.GetObject("toolInsertPicture.Image")));
+            this.toolInsertPicture.Name = "toolInsertPicture";
+            this.toolInsertPicture.Size = new System.Drawing.Size(180, 22);
+            this.toolInsertPicture.Text = "Insert Picture";
+            this.toolInsertPicture.Click += new System.EventHandler(this.toolInsertPicture_Click);
+            // 
+            // toolZoomIn
+            // 
+            this.toolZoomIn.Image = ((System.Drawing.Image)(resources.GetObject("toolZoomIn.Image")));
+            this.toolZoomIn.Name = "toolZoomIn";
+            this.toolZoomIn.Size = new System.Drawing.Size(180, 22);
+            this.toolZoomIn.Text = "Zoom in";
+            this.toolZoomIn.Click += new System.EventHandler(this.toolZoomIn_Click);
+            // 
+            // toolZoomOut
+            // 
+            this.toolZoomOut.Image = ((System.Drawing.Image)(resources.GetObject("toolZoomOut.Image")));
+            this.toolZoomOut.Name = "toolZoomOut";
+            this.toolZoomOut.Size = new System.Drawing.Size(180, 22);
+            this.toolZoomOut.Text = "Zoom out";
+            this.toolZoomOut.Click += new System.EventHandler(this.toolZoomOut_Click);
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.copyToolStripMenuItem1,
+            this.pasteToolStripMenuItem1,
+            this.cutToolStripMenuItem,
+            this.undoToolStripMenuItem,
+            this.redoToolStripMenuItem});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(104, 114);
+            // 
+            // copyToolStripMenuItem1
+            // 
+            this.copyToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("copyToolStripMenuItem1.Image")));
+            this.copyToolStripMenuItem1.Name = "copyToolStripMenuItem1";
+            this.copyToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.copyToolStripMenuItem1.Text = "Copy";
+            this.copyToolStripMenuItem1.Click += new System.EventHandler(this.copyToolStripMenuItem1_Click);
+            // 
+            // pasteToolStripMenuItem1
+            // 
+            this.pasteToolStripMenuItem1.Image = ((System.Drawing.Image)(resources.GetObject("pasteToolStripMenuItem1.Image")));
+            this.pasteToolStripMenuItem1.Name = "pasteToolStripMenuItem1";
+            this.pasteToolStripMenuItem1.Size = new System.Drawing.Size(103, 22);
+            this.pasteToolStripMenuItem1.Text = "Paste";
+            this.pasteToolStripMenuItem1.Click += new System.EventHandler(this.pasteToolStripMenuItem1_Click);
+            // 
+            // cutToolStripMenuItem
+            // 
+            this.cutToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("cutToolStripMenuItem.Image")));
+            this.cutToolStripMenuItem.Name = "cutToolStripMenuItem";
+            this.cutToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.cutToolStripMenuItem.Text = "Cut";
+            this.cutToolStripMenuItem.Click += new System.EventHandler(this.cutToolStripMenuItem_Click);
+            // 
+            // undoToolStripMenuItem
+            // 
+            this.undoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("undoToolStripMenuItem.Image")));
+            this.undoToolStripMenuItem.Name = "undoToolStripMenuItem";
+            this.undoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.undoToolStripMenuItem.Text = "Undo";
+            this.undoToolStripMenuItem.Click += new System.EventHandler(this.undoToolStripMenuItem_Click);
+            // 
+            // redoToolStripMenuItem
+            // 
+            this.redoToolStripMenuItem.Image = ((System.Drawing.Image)(resources.GetObject("redoToolStripMenuItem.Image")));
+            this.redoToolStripMenuItem.Name = "redoToolStripMenuItem";
+            this.redoToolStripMenuItem.Size = new System.Drawing.Size(103, 22);
+            this.redoToolStripMenuItem.Text = "Redo";
+            this.redoToolStripMenuItem.Click += new System.EventHandler(this.redoToolStripMenuItem_Click);
             // 
             // frm_Hung
             // 
@@ -563,6 +658,7 @@ namespace MiniWord_HuynhDucHung
             this.statusStrip1.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -615,6 +711,15 @@ namespace MiniWord_HuynhDucHung
         private System.Windows.Forms.ToolStripButton btnFind;
         private System.Windows.Forms.ToolStripButton btnReplace;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem toolInsertPicture;
+        private System.Windows.Forms.ToolStripMenuItem toolZoomIn;
+        private System.Windows.Forms.ToolStripMenuItem toolZoomOut;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem copyToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem pasteToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem cutToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem undoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem redoToolStripMenuItem;
     }
 }
 

@@ -34,9 +34,6 @@ namespace MiniWord_HuynhDucHung
             this.btnFindNext = new System.Windows.Forms.Button();
             this.txtFindText = new System.Windows.Forms.TextBox();
             this.chkMatchWholeWord = new System.Windows.Forms.CheckBox();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.radioButton2 = new System.Windows.Forms.RadioButton();
-            this.radDirectionUp = new System.Windows.Forms.RadioButton();
             this.label2 = new System.Windows.Forms.Label();
             this.txtReplace = new System.Windows.Forms.TextBox();
             this.pnlReplace = new System.Windows.Forms.Panel();
@@ -44,7 +41,6 @@ namespace MiniWord_HuynhDucHung
             this.btnReplace = new System.Windows.Forms.Button();
             this.pnlFind = new System.Windows.Forms.Panel();
             this.pnlOptions = new System.Windows.Forms.Panel();
-            this.groupBox1.SuspendLayout();
             this.pnlReplace.SuspendLayout();
             this.pnlFind.SuspendLayout();
             this.pnlOptions.SuspendLayout();
@@ -92,37 +88,6 @@ namespace MiniWord_HuynhDucHung
             this.chkMatchWholeWord.TabIndex = 1;
             this.chkMatchWholeWord.Text = "Match &whole word";
             this.chkMatchWholeWord.UseVisualStyleBackColor = true;
-            // 
-            // groupBox1
-            // 
-            this.groupBox1.Controls.Add(this.radioButton2);
-            this.groupBox1.Controls.Add(this.radDirectionUp);
-            this.groupBox1.Location = new System.Drawing.Point(147, 4);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(154, 48);
-            this.groupBox1.TabIndex = 5;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Direction";
-            // 
-            // radioButton2
-            // 
-            this.radioButton2.Checked = true;
-            this.radioButton2.Location = new System.Drawing.Point(82, 21);
-            this.radioButton2.Name = "radioButton2";
-            this.radioButton2.Size = new System.Drawing.Size(66, 20);
-            this.radioButton2.TabIndex = 0;
-            this.radioButton2.TabStop = true;
-            this.radioButton2.Text = "&Down";
-            this.radioButton2.UseVisualStyleBackColor = true;
-            // 
-            // radDirectionUp
-            // 
-            this.radDirectionUp.Location = new System.Drawing.Point(14, 21);
-            this.radDirectionUp.Name = "radDirectionUp";
-            this.radDirectionUp.Size = new System.Drawing.Size(52, 20);
-            this.radDirectionUp.TabIndex = 0;
-            this.radDirectionUp.Text = "&Up";
-            this.radDirectionUp.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
@@ -186,7 +151,6 @@ namespace MiniWord_HuynhDucHung
             // 
             this.pnlOptions.Controls.Add(this.chkMatchCase);
             this.pnlOptions.Controls.Add(this.chkMatchWholeWord);
-            this.pnlOptions.Controls.Add(this.groupBox1);
             this.pnlOptions.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlOptions.Location = new System.Drawing.Point(0, 111);
             this.pnlOptions.Name = "pnlOptions";
@@ -208,9 +172,9 @@ namespace MiniWord_HuynhDucHung
             this.Name = "FindForm";
             this.ShowIcon = false;
             this.ShowInTaskbar = false;
-            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterParent;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "FindForm";
-            this.groupBox1.ResumeLayout(false);
+            this.Load += new System.EventHandler(this.FindForm_Load);
             this.pnlReplace.ResumeLayout(false);
             this.pnlReplace.PerformLayout();
             this.pnlFind.ResumeLayout(false);
@@ -234,9 +198,6 @@ namespace MiniWord_HuynhDucHung
         private System.Windows.Forms.Panel pnlReplace;
         private System.Windows.Forms.Button btnReplace;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.RadioButton radDirectionUp;
-        private System.Windows.Forms.RadioButton radioButton2;
-        private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.CheckBox chkMatchCase;
         private System.Windows.Forms.CheckBox chkMatchWholeWord;
         private System.Windows.Forms.TextBox txtFindText;

@@ -37,7 +37,6 @@ namespace MiniWord_HuynhDucHung
             rtbContent.SelectionFont = new Font("Times New Roman", 14, FontStyle.Regular);
 
         }
-       
         private void richTextBox1_TextChanged(object sender, EventArgs e)
         {
             lengthText = rtbContent.TextLength;
@@ -397,6 +396,10 @@ namespace MiniWord_HuynhDucHung
         }
         private void btnInsertImage_Click(object sender, EventArgs e)
         {
+            insertPicture();
+        }
+        private void insertPicture()
+        {
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Filter = "Image Files|*.jpg;*.jpeg;*.png;*.gif;*.bmp";
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -455,28 +458,65 @@ namespace MiniWord_HuynhDucHung
             }
             
         }
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            
-        }
-
-        private void toolStripButton2_Click(object sender, EventArgs e)
-        {
-            
-        }
-
         private void btnFind_Click(object sender, EventArgs e)
         {
-            if (_findForm == null || _findForm.IsDisposed)
-                _findForm = new FindForm(rtbContent);
-            _findForm.ShowFind(false);
-        }
+            
 
+            _findForm = new FindForm(rtbContent,false);
+            _findForm.Show(rtbContent);
+
+
+        }
         private void btnReplace_Click(object sender, EventArgs e)
         {
-            if (_findForm == null || _findForm.IsDisposed)
-                _findForm = new FindForm(rtbContent);
-            _findForm.ShowFind(true);
+            
+            _findForm = new FindForm(rtbContent,true);
+            _findForm.Show(rtbContent);
+
+        }
+        private void toolInsertPicture_Click(object sender, EventArgs e)
+        {
+            insertPicture();
+        }
+        private void toolZoomIn_Click(object sender, EventArgs e)
+        {
+            if (rtbContent.ZoomFactor < 64.5)
+            {
+                rtbContent.ZoomFactor = rtbContent.ZoomFactor + (float)0.2;
+            }
+        }
+        private void toolZoomOut_Click(object sender, EventArgs e)
+        {
+            if (rtbContent.ZoomFactor > 0.515625)
+            {
+                rtbContent.ZoomFactor = rtbContent.ZoomFactor - (float)0.1;
+            }
+
+        }
+
+        private void copyToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            rtbContent.Copy();
+        }
+
+        private void pasteToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            rtbContent.Paste();
+        }
+
+        private void cutToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbContent.Cut();
+        }
+
+        private void undoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbContent.Undo();
+        }
+
+        private void redoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            rtbContent.Redo();
         }
     }
 }

@@ -1,96 +1,51 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace MiniWord_HuynhDucHung
 {
     public partial class FindForm : Form
     {
-		RichTextBox _richTextBox;
-
-		bool _close;
-
-		public FindForm(RichTextBox richTextBox)
+		private RichTextBox _richTextBox;
+		private bool isReplace;
+		public FindForm(RichTextBox richTextBox,bool isReplace)
 		{
 			InitializeComponent();
-
+			this.isReplace = isReplace;
 			_richTextBox = richTextBox;
 		}
 
-		protected override void OnFormClosing(FormClosingEventArgs e)
+	
+
+		private void FindForm_Load(object sender, EventArgs e)
 		{
-			if (!_close)
-			{
-				// hide instead of close
-				this.Hide();
-				e.Cancel = true;
-			}
-
-			base.OnFormClosing(e);
-		}
-		public void ForceClose()
-		{
-			_close = true;
-			this.Close();
-		}
-
-		public void ShowFind(bool replaceMode)
-		{
-			this.Text = !replaceMode ? "Find" : "Replace";
-			pnlReplace.Visible = replaceMode;
-
-			if (!this.Visible)
-            {
-				this.Show(_richTextBox);
-            }
-				
-			// resize form
-			this.ClientSize = new Size(this.ClientSize.Width, pnlOptions.Bottom);
-
-			txtFindText.Focus();
-			txtFindText.SelectAll();
-		}
+            this.Text = isReplace ? "Find" : "Replace";
+            pnlReplace.Visible = isReplace;
+        }
 
 		void BtnFindNextClick(object sender, EventArgs e)
 		{
-			Find(_richTextBox, txtFindText.Text, chkMatchCase.Checked, chkMatchWholeWord.Checked, radDirectionUp.Checked);
+			int index;
+			RichTextBoxFinds options = RichTextBoxFinds.None;
+            if (chkMatchCase.Checked)
+                options |= RichTextBoxFinds.MatchCase;
+            if (chkMatchWholeWord.Checked)
+                options |= RichTextBoxFinds.WholeWord;
+
+
+            index = _richTextBox.Find(txtFindText.Text, _richTextBox.SelectionStart + _richTextBox.SelectionLength, options);
+			if (index == -1)
+			{
+				MessageBox.Show($"Cannot find \"{txtFindText.Text}\"", "Word", MessageBoxButtons.OK, MessageBoxIcon.Information);
+			}
+			else
+			{
+				_richTextBox.SelectionStart = index;
+				_richTextBox.SelectionLength = txtFindText.Text.Length;
+			}
+			
 			_richTextBox.Focus();
 		}
-		void Find(RichTextBox richText, string text, bool matchCase, bool matchWholeWord, bool upDirection)
-		{
-			RichTextBoxFinds options = RichTextBoxFinds.None;
-			if (matchCase)
-				options |= RichTextBoxFinds.MatchCase;
-			if (matchWholeWord)
-				options |= RichTextBoxFinds.WholeWord;
-			if (upDirection)
-				options |= RichTextBoxFinds.Reverse;
-
-			int index;
-			if (upDirection)
-				index = richText.Find(text, 0, richText.SelectionStart, options);
-			else
-				index = richText.Find(text, richText.SelectionStart + richText.SelectionLength, options);
-
-			if (index >= 0)
-			{
-				richText.SelectionStart = index;
-				richText.SelectionLength = text.Length;
-			}
-			else // text not found
-			{
-				MessageBox.Show(Application.ProductName + " has finished searching the document.",
-								Application.ProductName, MessageBoxButtons.OK,
-								MessageBoxIcon.Information);
-			}
-		}
-
+		
 		void BtnReplaceClick(object sender, EventArgs e)
 		{
 			if (_richTextBox.SelectedText != "")
@@ -114,5 +69,7 @@ namespace MiniWord_HuynhDucHung
 				index = _richTextBox.Find(searchText, startIndex, RichTextBoxFinds.None);
 			}	
 		}
-	}
+
+        
+    }
 }
